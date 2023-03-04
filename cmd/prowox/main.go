@@ -1,11 +1,15 @@
 package main
 
 import (
+	"time"
+
 	"github.com/xunzhuo/prowox/cmd/prowox/config"
 	"github.com/xunzhuo/prowox/pkg/commands"
 	"github.com/xunzhuo/prowox/pkg/core"
 	"k8s.io/klog"
 )
+
+var maxRetries = 60
 
 func main() {
 	klog.Info("Starting Prowox ...")
@@ -16,8 +20,12 @@ func main() {
 	}
 
 	if config.Get().TYPE == "schedule" {
-		if err := commands.MergeAcceptedPRs(); err != nil {
-			klog.Error(err)
+		for i := 0; i < maxRetries; i++ {
+			if err := commands.MergeAcceptedPRs(); err != nil {
+				klog.Error(err)
+			}
+			time.Sleep(15 * time.Second)
+			klog.Info("Prowox schedule merge in every 15s retry time: ", i+1)
 		}
 	}
 
