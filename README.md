@@ -10,7 +10,7 @@ The Prowox is a kube prow style bot helps manage your issues and PRs via GitHub 
 
 Take this as an example to use this bot: [examples](./examples/prowox.yaml). You should edit it firstly to set up maintainers, approvers and reviewers of your project.
 
-We support read roles from OWNERS file, see https://github.com/Xunzhuo/prowox/blob/main/OWNERS:
+We support read roles from [OWNERS](https://github.com/Xunzhuo/prowox/blob/main/OWNERS) file, follow k8s community [OWNERS Rules](https://go.k8s.io/owners):
 
 ``` yaml
 # See the OWNERS docs at https://go.k8s.io/owners
