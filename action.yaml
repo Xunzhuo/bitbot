@@ -1,0 +1,13 @@
+name: "Prowox"
+description: "Prowox is a Kube Prow Style Bot helps manage your issues and PRs."
+author: "Xunzhuo"
+
+runs:
+  using: "composite"
+  steps:
+    - run: cd ${{ github.action_path }} && make run
+      shell: bash
+
+branding:
+  icon: 'anchor'
+  color: 'blue'
