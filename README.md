@@ -26,7 +26,7 @@ reviewers:
 
 ```
 
-We also support define Roles in env (We will prioritize reading roles from OWNERS):
+We also support define Roles in env (Not recommended, we will prioritize reading roles from OWNERS if you defined it.):
 
 ```yaml
 env:
