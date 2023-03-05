@@ -27,6 +27,8 @@ on:
   schedule:
     - cron: '*/5 * * * *'
 
+  workflow_dispatch:
+
 env:
   # This commands is for anyone who can use it
   COMMON_PLUGINS: |-
@@ -180,6 +182,6 @@ jobs:
 
       - name: Merge PR
         uses: ./
-        if: ${{ github.event_name == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
         env:
           TYPE: schedule
