@@ -33,18 +33,19 @@ func SafeMerge(args ...string) error {
 }
 
 type PRNumberList []struct {
-	Number int `json:"number"`
+	Number         int    `json:"number"`
+	ReviewDecision string `json:"reviewDecision"`
 }
 
 func (p PRNumberList) IDs() PRNumberMap {
 	ids := PRNumberMap{}
 	for _, pr := range p {
-		ids[fmt.Sprint(pr.Number)] = struct{}{}
+		ids[fmt.Sprint(pr.Number)] = pr.ReviewDecision
 	}
 	return ids
 }
 
-type PRNumberMap map[string]struct{}
+type PRNumberMap map[string]string
 
 func (m PRNumberMap) IDs() []string {
 	ids := []string{}
@@ -61,14 +62,32 @@ func MergeAcceptedPRs() error {
 		return err
 	}
 	var errs error
-	for num := range nums {
-		err := mergeWithNum(num)
+	for num, status := range nums {
+		if status != "APPROVED" {
+			err := approvePR(num)
+			if err != nil {
+				errs = multierror.Append(errs, err)
+			}
+		} else {
+			klog.Info(num, " has been approved.")
+		}
+		err = mergeWithNum(num)
 		if err != nil {
 			errs = multierror.Append(errs, err)
 		}
 	}
 
 	return err
+}
+
+func approvePR(prNum string) error {
+	return utils.ExecGitHubCmd(
+		"pr",
+		"-R",
+		config.Get().GH_REPOSITORY,
+		"review",
+		prNum,
+		"--approve")
 }
 
 func ListAcceptedPRs() (PRNumberMap, error) {
@@ -100,6 +119,8 @@ func ListPendingPRs() (PRNumberMap, error) {
 		"approved",
 		"--json",
 		"number",
+		"--json",
+		"reviewDecision",
 	)
 	if err != nil {
 		return nil, err
@@ -128,6 +149,8 @@ func ListBlockedPRs() (PRNumberMap, error) {
 		"do-not-merge",
 		"--json",
 		"number",
+		"--json",
+		"reviewDecision",
 	)
 	if err != nil {
 		return nil, err
@@ -150,7 +173,8 @@ func mergeWithNum(prNum string) error {
 		config.Get().GH_REPOSITORY,
 		"merge",
 		prNum,
-		"--squash")
+		"--squash",
+		"--admin")
 }
 
 func merge(args ...string) error {
