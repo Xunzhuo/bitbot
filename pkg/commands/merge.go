@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/tetratelabs/multierror"
 	"github.com/xunzhuo/prowox/cmd/prowox/config"
@@ -33,14 +34,32 @@ func SafeMerge(args ...string) error {
 }
 
 type PRNumberList []struct {
-	Number         int    `json:"number"`
-	ReviewDecision string `json:"reviewDecision"`
+	LatestReviews []struct {
+		Author struct {
+			Login string `json:"login"`
+		} `json:"author"`
+		AuthorAssociation   string        `json:"authorAssociation"`
+		Body                string        `json:"body"`
+		SubmittedAt         time.Time     `json:"submittedAt"`
+		IncludesCreatedEdit bool          `json:"includesCreatedEdit"`
+		ReactionGroups      []interface{} `json:"reactionGroups"`
+		State               string        `json:"state"`
+	} `json:"latestReviews"`
+	Number int `json:"number"`
 }
 
 func (p PRNumberList) IDs() PRNumberMap {
 	ids := PRNumberMap{}
 	for _, pr := range p {
-		ids[fmt.Sprint(pr.Number)] = pr.ReviewDecision
+		if len(pr.LatestReviews) == 0 {
+			ids[fmt.Sprint(pr.Number)] = "NOTEXIST"
+		} else {
+			if pr.LatestReviews[0].Author.Login != "github-actions" {
+				ids[fmt.Sprint(pr.Number)] = "NOTGITHUBACTION"
+			} else {
+				ids[fmt.Sprint(pr.Number)] = pr.LatestReviews[0].State
+			}
+		}
 	}
 	return ids
 }
@@ -120,7 +139,7 @@ func ListPendingPRs() (PRNumberMap, error) {
 		"--json",
 		"number",
 		"--json",
-		"reviewDecision",
+		"latestReviews",
 	)
 	if err != nil {
 		return nil, err
@@ -150,7 +169,7 @@ func ListBlockedPRs() (PRNumberMap, error) {
 		"--json",
 		"number",
 		"--json",
-		"reviewDecision",
+		"latestReviews",
 	)
 	if err != nil {
 		return nil, err
