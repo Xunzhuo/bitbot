@@ -9,7 +9,7 @@ import (
 	"k8s.io/klog"
 )
 
-var maxRetries = 720
+var maxRetries = 240
 
 func main() {
 	klog.Info("Starting Prowox ...")
@@ -24,7 +24,7 @@ func main() {
 			if err := commands.MergeAcceptedPRs(); err != nil {
 				klog.Error(err)
 			}
-			time.Sleep(15 * time.Second)
+			time.Sleep(30 * time.Second)
 			klog.Info("Prowox schedule merge in every 15s retry time: ", i+1)
 		}
 	}
