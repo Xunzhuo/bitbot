@@ -9,7 +9,7 @@ import (
 	"k8s.io/klog"
 )
 
-var maxRetries = 60
+var maxRetries = 720
 
 func main() {
 	klog.Info("Starting Prowox ...")
