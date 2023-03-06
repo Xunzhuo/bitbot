@@ -25,7 +25,7 @@ func main() {
 				klog.Error(err)
 			}
 			time.Sleep(30 * time.Second)
-			klog.Info("Prowox schedule merge in every 15s retry time: ", i+1)
+			klog.Info("Prowox schedule merge in every 30s retry time: ", i+1)
 		}
 	}
 
