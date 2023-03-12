@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
 	"k8s.io/klog"
 )
 

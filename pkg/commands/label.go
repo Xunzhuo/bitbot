@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/pkg/utils"
 	"github.com/tetratelabs/multierror"
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
-	"github.com/xunzhuo/prowox/pkg/utils"
 )
 
 func init() {
@@ -83,9 +83,9 @@ func approveNotifier() string {
 
 This pull-request has been approved by: @%s
 	
-The full list of commands accepted by this bot can be found [here](https://github.com/Xunzhuo/prowox/blob/main/COMMAND.md).
+The full list of commands accepted by this bot can be found [here](https://github.com/Xunzhuo/bitbot/blob/main/COMMAND.md).
 	
-The pull request process is described [here](https://github.com/Xunzhuo/prowox/blob/main/PROCESS.md).
+The pull request process is described [here](https://github.com/Xunzhuo/bitbot/blob/main/PROCESS.md).
 
 <details>
     <summary>Details</summary>
@@ -133,9 +133,9 @@ func lgtmNotifier() string {
 
 This pull-request has been lgtm by: @%s
 	
-The full list of commands accepted by this bot can be found [here](https://github.com/Xunzhuo/prowox/blob/main/COMMAND.md).
+The full list of commands accepted by this bot can be found [here](https://github.com/Xunzhuo/bitbot/blob/main/COMMAND.md).
 	
-The pull request process is described [here](https://github.com/Xunzhuo/prowox/blob/main/PROCESS.md).
+The pull request process is described [here](https://github.com/Xunzhuo/bitbot/blob/main/PROCESS.md).
 
 <details>
     <summary>Details</summary>

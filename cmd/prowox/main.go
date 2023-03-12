@@ -3,9 +3,9 @@ package main
 import (
 	"time"
 
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
-	"github.com/xunzhuo/prowox/pkg/commands"
-	"github.com/xunzhuo/prowox/pkg/core"
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/pkg/commands"
+	"github.com/Xunzhuo/bitbot/pkg/core"
 	"k8s.io/klog"
 )
 

@@ -18,7 +18,7 @@ OWNERS files.
     opened the PR
   - If the code changes look good to them, a **reviewer** types `/lgtm` in a PR comment or review;
     if they change their mind, they `/lgtm cancel`
-  - Once a **reviewer** has `/lgtm`'ed, [Bot](https://github.com/Xunzhuo/prowox) applies an `lgtm` label to the PR
+  - Once a **reviewer** has `/lgtm`'ed, [Bot](https://github.com/Xunzhuo/bitbot) applies an `lgtm` label to the PR
 - Phase 2: Humans approve the PR
   - The PR **author** `/assign`'s all suggested **approvers** to the PR, and optionally notifies
     them (eg: "pinging @foo for approval")
@@ -27,9 +27,9 @@ OWNERS files.
     forwards/backwards compatibility, API and flag definitions, etc
   - If the code changes look good to them, an **approver** types `/approve` in a PR comment or
     review; if they change their mind, they `/approve cancel`
-  - [Bot](https://github.com/Xunzhuo/prowox) updates its comment in the PR to indicate which **approvers** still need to approve
+  - [Bot](https://github.com/Xunzhuo/bitbot) updates its comment in the PR to indicate which **approvers** still need to approve
   - Once all **approvers** (one from each of the previously identified OWNERS files) have approved,
-    [Bot](https://github.com/Xunzhuo/prowox) applies an `approved` label
+    [Bot](https://github.com/Xunzhuo/bitbot) applies an `approved` label
 - Phase 3: Automation merges the PR:
   - If all of the following are true:
     - All required labels are present (eg: `lgtm`, `approved`)

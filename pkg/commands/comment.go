@@ -3,9 +3,9 @@ package commands
 import (
 	"os"
 
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/pkg/utils"
 	"github.com/tetratelabs/multierror"
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
-	"github.com/xunzhuo/prowox/pkg/utils"
 	"k8s.io/klog"
 )
 

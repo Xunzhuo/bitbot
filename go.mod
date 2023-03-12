@@ -1,4 +1,4 @@
-module github.com/xunzhuo/prowox
+module github.com/Xunzhuo/bitbot
 
 go 1.19
 

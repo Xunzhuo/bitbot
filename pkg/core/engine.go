@@ -9,10 +9,10 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/pkg/commands"
+	"github.com/Xunzhuo/bitbot/pkg/utils"
 	"github.com/tetratelabs/multierror"
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
-	"github.com/xunzhuo/prowox/pkg/commands"
-	"github.com/xunzhuo/prowox/pkg/utils"
 	"gopkg.in/yaml.v3"
 	"k8s.io/klog"
 )
@@ -22,8 +22,9 @@ var CommandRegex = regexp.MustCompile(`\/.+`)
 var (
 	MEMBERS_PLUGINS     = []string{}
 	REVIEWERS_PLUGINS   = []string{}
-	MAINTAINERS_PLUGINS = []string{}
 	APPROVERS_PLUGINS   = []string{}
+	MAINTAINERS_PLUGINS = []string{}
+	ADMINS_PLUGINS      = []string{}
 	AUTHOR_PLUGINS      = []string{}
 	COMMON_PLUGINS      = []string{}
 )
@@ -33,6 +34,7 @@ var (
 		Maintainers: []string{},
 		Approvers:   []string{},
 		Reviewers:   []string{},
+		Admins:      []string{},
 	}
 )
 
@@ -42,6 +44,7 @@ func init() {
 }
 
 type Roles struct {
+	Admins      []string `yaml:"admins"`
 	Maintainers []string `yaml:"maintainers"`
 	Approvers   []string `yaml:"approvers"`
 	Reviewers   []string `yaml:"reviewers"`
@@ -65,6 +68,9 @@ func constructPlugins() {
 
 	plugins = os.Getenv("MAINTAINERS_PLUGINS")
 	MAINTAINERS_PLUGINS = strings.Split(plugins, "\n")
+
+	plugins = os.Getenv("ADMINS_PLUGINS")
+	ADMINS_PLUGINS = strings.Split(plugins, "\n")
 }
 
 func constructRoles() {
@@ -93,6 +99,7 @@ func constructRoles() {
 
 func constructEnvRoles() Roles {
 	roleList := Roles{
+		Admins:      []string{},
 		Maintainers: []string{},
 		Approvers:   []string{},
 		Reviewers:   []string{},
@@ -110,11 +117,16 @@ func constructEnvRoles() Roles {
 	MAINTAINERS := strings.Split(roles, "\n")
 	roleList.Maintainers = append(roleList.Maintainers, MAINTAINERS...)
 
+	roles = os.Getenv("ADMINS")
+	ADMINS := strings.Split(roles, "\n")
+	roleList.Admins = append(roleList.Admins, ADMINS...)
+
 	return roleList
 }
 
 func constructOWNERRoles() (*Roles, error) {
 	roles := &Roles{
+		Admins:      []string{},
 		Maintainers: []string{},
 		Approvers:   []string{},
 		Reviewers:   []string{},
@@ -194,6 +206,14 @@ func constructOwnPlugins() map[string]struct{} {
 		plugins = appendPlugins(plugins, REVIEWERS_PLUGINS)
 		plugins = appendPlugins(plugins, APPROVERS_PLUGINS)
 		plugins = appendPlugins(plugins, MAINTAINERS_PLUGINS)
+	}
+	if belongTo(own, ROLES.Admins) {
+		plugins = appendPlugins(plugins, AUTHOR_PLUGINS)
+		plugins = appendPlugins(plugins, MEMBERS_PLUGINS)
+		plugins = appendPlugins(plugins, REVIEWERS_PLUGINS)
+		plugins = appendPlugins(plugins, APPROVERS_PLUGINS)
+		plugins = appendPlugins(plugins, MAINTAINERS_PLUGINS)
+		plugins = appendPlugins(plugins, ADMINS_PLUGINS)
 	}
 
 	return plugins

@@ -3,8 +3,8 @@ package commands
 import (
 	"fmt"
 
-	"github.com/xunzhuo/prowox/cmd/prowox/config"
-	"github.com/xunzhuo/prowox/pkg/utils"
+	"github.com/Xunzhuo/bitbot/cmd/prowox/config"
+	"github.com/Xunzhuo/bitbot/pkg/utils"
 )
 
 func init() {
